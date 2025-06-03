@@ -1,157 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        .calculator {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .calculator input {
-            width: 100%;
-            padding: 10px;
-            font-size: 2rem;
-            text-align: right;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .calculator button {
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            background-color: #f0f0f0;
-            cursor: pointer;
-        }
-        .calculator button:hover {
-            background-color: #ddd;
-        }
-        .calculator button:active {
-            background-color: #ccc;
-        }
-        .calculator .operator {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .calculator .clear {
-            background-color: #f44336;
-            color: white;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expression Calculator</title>
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --accent: #f44336;
+      --bg: #f0f2f5;
+      --white: #fff;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --radius: 1rem;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: var(--bg);
+    }
+
+    .calculator {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 20px var(--shadow);
+      width: 360px;
+    }
+
+    .calculator input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.5rem;
+      text-align: left;
+      border: none;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      background: #eee;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+
+    .calculator button {
+      padding: 1rem;
+      font-size: 1.25rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: #e0e0e0;
+      transition: background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .calculator button:hover {
+      background-color: #d6d6d6;
+    }
+
+    .calculator button:active {
+      background-color: #cfcfcf;
+    }
+
+    .calculator .clear {
+      background-color: var(--accent);
+      color: var(--white);
+    }
+
+    .calculator .equal {
+      grid-column: span 4;
+      background-color: var(--primary);
+      color: var(--white);
+    }
+  </style>
 </head>
 <body>
+  <div class="calculator">
+    <input type="text" id="display" placeholder="e.g. 5 + 3" />
+    <div class="buttons">
+      <button onclick="insert('7')">7</button>
+      <button onclick="insert('8')">8</button>
+      <button onclick="insert('9')">9</button>
+      <button onclick="insert(' + ')">+</button>
 
-<div class="calculator">
-    <input type="text" id="display" disabled />
-    <div>
-        <button onclick="appendNumber('7')">7</button>
-        <button onclick="appendNumber('8')">8</button>
-        <button onclick="appendNumber('9')">9</button>
-        <button onclick="chooseOperator('+')" class="operator">+</button>
-    </div>
-    <div>
-        <button onclick="appendNumber('4')">4</button>
-        <button onclick="appendNumber('5')">5</button>
-        <button onclick="appendNumber('6')">6</button>
-        <button onclick="chooseOperator('-')" class="operator">-</button>
-    </div>
-    <div>
-        <button onclick="appendNumber('1')">1</button>
-        <button onclick="appendNumber('2')">2</button>
-        <button onclick="appendNumber('3')">3</button>
-        <button onclick="chooseOperator('*')" class="operator">*</button>
-    </div>
-    <div>
-        <button onclick="appendNumber('0')">0</button>
-        <button onclick="appendDecimal()">.</button>
-        <button onclick="clearDisplay()" class="clear">C</button>
-        <button onclick="chooseOperator('/')" class="operator">/</button>
-    </div>
-    <div>
-        <button onclick="calculate()" class="operator">=</button>
-    </div>
-</div>
+      <button onclick="insert('4')">4</button>
+      <button onclick="insert('5')">5</button>
+      <button onclick="insert('6')">6</button>
+      <button onclick="insert(' - ')">−</button>
 
-<script>
-    let currentInput = '';
-    let operator = '';
-    let previousInput = '';
-    
-    function appendNumber(number) {
-        currentInput += number;
-        document.getElementById('display').value = currentInput;
+      <button onclick="insert('1')">1</button>
+      <button onclick="insert('2')">2</button>
+      <button onclick="insert('3')">3</button>
+      <button onclick="insert(' * ')">×</button>
+
+      <button onclick="insert('0')">0</button>
+      <button onclick="insert('.')">.</button>
+      <button onclick="clearDisplay()" class="clear">C</button>
+      <button onclick="insert(' / ')">÷</button>
+
+      <button onclick="insert(' ** ')">^</button>
+      <button onclick="insert(' % ')">%</button>
+      <button onclick="insert(' // ')">//</button>
+      <button onclick="insert(' & ')">&</button>
+
+      <button onclick="insert(' @ ')">@</button>
+      <button onclick="calculate()" class="equal">=</button>
+
+      <button onclick="deleteChar()">Del</button>
+      <button onclick="showDeveloperInDisplay()">Dev</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function insert(value) {
+      display.value += value;
     }
-    
-    function appendDecimal() {
-        if (!currentInput.includes('.')) {
-            currentInput += '.';
-            document.getElementById('display').value = currentInput;
-        }
-    }
-    
-    function chooseOperator(op) {
-        if (currentInput === '') return;
-        if (previousInput !== '') {
-            calculate();
-        }
-        operator = op;
-        previousInput = currentInput;
-        currentInput = '';
-    }
-    
-    function calculate() {
-        let result;
-        const prev = parseFloat(previousInput);
-        const current = parseFloat(currentInput);
-        
-        if (isNaN(prev) || isNaN(current)) return;
-        
-        switch (operator) {
-            case '+':
-                result = prev + current;
-                break;
-            case '-':
-                result = prev - current;
-                break;
-            case '*':
-                result = prev * current;
-                break;
-            case '/':
-                result = prev / current;
-                break;
-            default:
-                return;
-        }
-        
-        currentInput = result.toString();
-        operator = '';
-        previousInput = '';
-        document.getElementById('display').value = currentInput;
-    }
-    
+
     function clearDisplay() {
-        currentInput = '';
-        previousInput = '';
-        operator = '';
-        document.getElementById('display').value = '';
+      display.value = '';
     }
-</script>
 
+    function deleteChar() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function showDeveloperInDisplay() {
+      display.value = "Developer: Abe";
+    }
+
+    function calculate() {
+      const input = display.value.trim();
+      const parts = input.split(/\s+/);
+
+      if (parts.length !== 3) {
+        display.value = 'Error: format is number operator number';
+        return;
+      }
+
+      const x = parseFloat(parts[0]);
+      const op = parts[1];
+      const y = parseFloat(parts[2]);
+
+      if (isNaN(x) || isNaN(y)) {
+        display.value = 'Error: invalid numbers';
+        return;
+      }
+
+      let result;
+      switch (op) {
+        case '+': result = x + y; break;
+        case '-': result = x - y; break;
+        case '*': result = x * y; break;
+        case '/': result = y !== 0 ? x / y : 'Error: divide by 0'; break;
+        case '**': result = x ** y; break;
+        case '//': result = Math.floor(x / y); break;
+        case '%': result = x % y; break;
+        case '@':
+          result = 
+            `+ ${x + y}, ` +
+            `- ${x - y}, ` +
+            `* ${x * y}, ` +
+            `/ ${y !== 0 ? x / y : 'Err'}, ` +
+            `^ ${x ** y}, ` +
+            `// ${Math.floor(x / y)}, ` +
+            `% ${x % y}`;
+          break;
+        case '&':
+          result = `// ${Math.floor(x / y)}, % ${x % y}`;
+          break;
+        default:
+          result = 'Error: invalid operator';
+      }
+
+      display.value = result;
+    }
+  </script>
 </body>
 </html>
